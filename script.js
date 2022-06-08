@@ -15,17 +15,21 @@ const popular_games = `games?key=${KEY}&dates=${lastYear},${currentDate}&orderin
 const upcoming_games = `games?key=${KEY}&dates=${currentDate},${nextYear}&ordering=-added&page_size=9`
 const new_games = `games?key=${KEY}&dates=${lastYear},${currentDate}&ordering=-released&page_size=9`
 
+
 const popularEl = document.querySelector('.popular-games')
 const upcomingEl = document.querySelector('.upcoming-games')
 const newEl = document.querySelector('.new-games')
+const formEl = document.getElementById('search-form')
+const searchEl = document.querySelector('.search')
 
 
-getPopularGames()
-getUpcomingGames()
-getNewGames()
 
-function getPopularGames(){
-    axios.get(BASE_URL + popular_games)
+getPopularGames(popular_games)
+getUpcomingGames(upcoming_games)
+getNewGames(new_games)
+
+function getPopularGames(name){
+    axios.get(BASE_URL + name)
           .then(response =>{
               let result = response.data.results
               displayPopular(result);
@@ -33,8 +37,8 @@ function getPopularGames(){
           .catch(err => console.log(err))
 }
 
-function getUpcomingGames(){
-    axios.get(BASE_URL + upcoming_games)
+function getUpcomingGames(name){
+    axios.get(BASE_URL + name)
           .then(response =>{
               let result = response.data.results
               displayUpcoming(result);
@@ -42,8 +46,8 @@ function getUpcomingGames(){
           .catch(err => console.log(err))
 }
 
-function getNewGames(){
-    axios.get(BASE_URL + new_games)
+function getNewGames(name){
+    axios.get(BASE_URL + name)
           .then(response =>{
               let result = response.data.results
               displayNew(result);
@@ -59,6 +63,7 @@ function displayPopular(datas){
 
         let gameCard = document.createElement('div')
         gameCard.classList.add('game-card')
+        gameCard.style.animation = 'cards 0.3s linear'
         gameCard.innerHTML = `
         <h4>${name}</h4>
         <p>${released}</p>
@@ -102,3 +107,21 @@ function displayNew(datas){
         newEl.appendChild(gameCard)   
     });
 }
+
+formEl.addEventListener('submit',(e)=>{
+    e.preventDefault()
+    const searchTerm = searchEl.value
+    const search = `games?key=${KEY}&search=${searchTerm}&search_precise=true&page_size=9`
+
+    if (searchTerm && searchTerm !== '') {
+        getPopularGames(search)
+        getUpcomingGames(search)
+        getNewGames(search)
+
+        searchEl.value = ''
+    } else {
+        window.location.reload()
+    }
+    
+})
+
