@@ -58,7 +58,7 @@ main {
 .games h2 {
     color: rgb(248, 155, 48);
     margin-bottom: 2rem;
-    margin-top: 4rem;
+    margin-top: 3rem;
 }
 
 .games > div {
@@ -74,6 +74,7 @@ main {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 0 10px 3px rgba(0,0,0,0.1);
+    animation: cards 0.3s linear;
 }
 
 .game-card h4 {
@@ -89,5 +90,23 @@ main {
     width: 100%;
     height: 18rem;
     object-fit: center;
+}
+
+@keyframes cards {
+    0% {
+        transform: scale(0.8);
+    }
+    25% {
+        transform: scale(0.85);
+    }
+    50% {
+        transform: scale(0.9);
+    }
+    75% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
